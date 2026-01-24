@@ -21,7 +21,7 @@ const SkillGraph: React.FC<SkillGraphProps> = ({ data }) => {
   }, [data]);
 
   // Filter valid data
-  const validData = sortedData.filter(d => typeof d.score === 'number' && !isNaN(d.score) && d.score >= 0 && d.score <= 100);
+  const validData = sortedData.filter(d => typeof d.score === 'number' && isFinite(d.score) && !isNaN(d.score) && d.score >= 0 && d.score <= 100 && d.date && !isNaN(new Date(d.date).getTime()));
 
   if (!validData || validData.length < 2) {
     return (
