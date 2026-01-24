@@ -68,6 +68,19 @@ const SkillGraph: React.FC<SkillGraphProps> = ({ data }) => {
   const linePath = createPath(points);
   const areaPath = `${linePath} L ${points[points.length-1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
 
+  // Check for invalid paths
+  if (linePath.includes('NaN') || areaPath.includes('NaN')) {
+    return (
+      <div className="bg-white dark:bg-graphite-surface p-8 rounded-[2rem] border border-slate-200 dark:border-graphite-border shadow-sm flex flex-col items-center justify-center text-center h-64">
+        <div className="w-12 h-12 bg-indigo-50 dark:bg-graphite-secondary rounded-full flex items-center justify-center mb-4">
+          <svg className="w-6 h-6 text-indigo-400 dark:text-graphite-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+        </div>
+        <h3 className="text-sm font-bold text-slate-900 dark:text-graphite-text-main">Invalid Data</h3>
+        <p className="text-xs text-slate-500 dark:text-graphite-text-sub mt-1">Some data points are invalid. Please check your quiz scores.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-graphite-surface p-6 rounded-[2.5rem] border border-slate-200 dark:border-graphite-border shadow-sm flex flex-col h-full relative group">
       <div className="flex justify-between items-center mb-6">
