@@ -257,7 +257,7 @@ const App: React.FC = () => {
   }, [student?.preferences?.explanationStyle]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') localStorage.setItem('study_ai_last_category', category);
+    if (typeof window !== 'undefined') localStorage.setItem('study_ai_last_category', JSON.stringify(category));
   }, [category]);
 
   useEffect(() => {
@@ -280,20 +280,20 @@ const App: React.FC = () => {
   }, [studySchedule]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') localStorage.setItem('study_ai_current_session_id', currentSessionId);
+    if (typeof window !== 'undefined') localStorage.setItem('study_ai_current_session_id', JSON.stringify(currentSessionId));
   }, [currentSessionId]);
 
   useEffect(() => {
     // Persist view state only if valid
     if (typeof window !== 'undefined') {
-        localStorage.setItem('study_ai_view', view);
+        localStorage.setItem('study_ai_view', JSON.stringify(view));
     }
   }, [view]);
 
   // FIX: Persist selectedSubjectId
   useEffect(() => {
     if (typeof window !== 'undefined') {
-        localStorage.setItem('study_ai_selected_subject', selectedSubjectId);
+        localStorage.setItem('study_ai_selected_subject', JSON.stringify(selectedSubjectId));
     }
   }, [selectedSubjectId]);
 
