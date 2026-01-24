@@ -20,7 +20,10 @@ const SkillGraph: React.FC<SkillGraphProps> = ({ data }) => {
     return [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [data]);
 
-  if (!sortedData || sortedData.length < 2) {
+  // Filter valid data
+  const validData = sortedData.filter(d => typeof d.score === 'number' && !isNaN(d.score) && d.score >= 0 && d.score <= 100);
+
+  if (!validData || validData.length < 2) {
     return (
       <div className="bg-white dark:bg-graphite-surface p-8 rounded-[2rem] border border-slate-200 dark:border-graphite-border shadow-sm flex flex-col items-center justify-center text-center h-64">
         <div className="w-12 h-12 bg-indigo-50 dark:bg-graphite-secondary rounded-full flex items-center justify-center mb-4">
@@ -40,8 +43,8 @@ const SkillGraph: React.FC<SkillGraphProps> = ({ data }) => {
   const graphWidth = width - padding * 2;
 
   // plotting
-  const points: PlotPoint[] = sortedData.map((d, i) => {
-    const x = padding + (i / (sortedData.length - 1)) * graphWidth;
+  const points: PlotPoint[] = validData.map((d, i) => {
+    const x = padding + (i / (validData.length - 1)) * graphWidth;
     const y = height - padding - (d.score / 100) * graphHeight;
     return { x, y, ...d };
   });
