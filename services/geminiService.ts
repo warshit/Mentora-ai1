@@ -6,9 +6,9 @@ import { Message, StudentProfile, LearningCategory, ExplanationStyle, DoubtType,
 
 // Initialize AI instance on demand to prevent top-level crashes
 const getAI = () => {
-  const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
+  const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
-    console.error("API_KEY is missing. Check your environment configuration.");
+    console.error("VITE_API_KEY is missing. Check your environment configuration.");
   }
   return new GoogleGenAI({ apiKey: apiKey || '' });
 };
