@@ -113,6 +113,7 @@ const App: React.FC = () => {
   const [activeQuizTopicId, setActiveQuizTopicId] = useState<string | null>(null);
   const [activeTopic, setActiveTopic] = useState<{subject: Subject, unit: Unit, topic: Topic} | null>(null);
   const [topicContentCache, setTopicContentCache] = useState<Record<string, TopicStudyContent>>({});
+  const [quizCache, setQuizCache] = useState<Record<string, QuizQuestion[]>>({});
   const [isTopicLoading, setIsTopicLoading] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -619,13 +620,21 @@ const App: React.FC = () => {
       setActiveQuizTopicId(null);
     }
 
-    const questions = await generateQuiz(
-      subject.code, 
-      subject.name, 
-      unit.title, 
-      topic ? topic.name : null, 
-      !topic
-    );
+    const quizKey = `${subject.code}-${unit.title}-${topic?.name || 'unit'}`;
+    let questions = quizCache[quizKey];
+
+    if (!questions) {
+      questions = await generateQuiz(
+        subject.code, 
+        subject.name, 
+        unit.title, 
+        topic ? topic.name : null, 
+        !topic
+      );
+      if (questions && questions.length > 0) {
+        setQuizCache(prev => ({ ...prev, [quizKey]: questions! }));
+      }
+    }
 
     if (questions && questions.length > 0) {
       setQuizConfig({
