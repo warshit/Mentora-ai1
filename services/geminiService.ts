@@ -68,7 +68,7 @@ export const getGeminiResponse = async (
       .replace('{{SYLLABUS_CONTEXT}}', syllabusContext);
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-pro',
       contents: [
         ...history.map(m => ({
           role: m.role === 'user' ? 'user' : 'model',
@@ -124,7 +124,7 @@ export const parseSyllabusText = async (text: string) => {
   try {
     const ai = getAI();
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-pro',
       contents: `Extract the syllabus structure from the following text into a JSON roadmap. TEXT: ${text}`,
       config: {
         responseMimeType: "application/json",
@@ -203,7 +203,7 @@ export const generateQuiz = async (
     `;
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-pro',
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -317,7 +317,7 @@ export const generateTopicStudyContent = async (
     let response: GenerateContentResponse;
     try {
       response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-        model: 'gemini-1.5-pro', 
+        model: 'gemini-pro', 
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -328,7 +328,7 @@ export const generateTopicStudyContent = async (
     } catch (primaryError) {
       console.warn("Primary model (Pro) failed, attempting fallback to Flash:", primaryError);
       response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-        model: 'gemini-1.5-flash', 
+        model: 'gemini-pro', 
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -411,7 +411,7 @@ export const generatePracticeQuestions = async (
     );
 
     const apiCall = withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-pro',
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -499,7 +499,7 @@ export const analyzeSkillGaps = async (
     }
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-pro',
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -682,7 +682,7 @@ export const generateCodeAssistance = async (
     `;
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-pro',
       contents: [
         { role: 'user', parts: [{ text: systemPrompt }] }, 
         { role: 'model', parts: [{ text: "Understood. I will strictly follow the DSA Coding Assistant guidelines, prioritizing the user's specific question and minimizing code analysis unless requested." }] },
@@ -740,7 +740,7 @@ export const generateLearningInsights = async (student: StudentProfile): Promise
     `;
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-flash', // Flash is sufficient and fast for insights
+      model: 'gemini-pro', // Flash is sufficient and fast for insights
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -804,7 +804,7 @@ export const generateStructuredSchedule = async (
     `;
 
     const response = await withRetry<GenerateContentResponse>(() => ai.models.generateContent({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-pro',
       contents: prompt,
       config: {
         responseMimeType: "application/json",
